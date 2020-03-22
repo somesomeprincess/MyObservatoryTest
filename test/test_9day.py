@@ -15,7 +15,7 @@ class NightDayTest(unittest.TestCase):
             'noReset': 'True'
         }
         cls.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_capabilities=cap)
-        cls.driver.implicitly_wait(30)
+        cls.driver.implicitly_wait(10)
         cls.mainpage = MainPage(cls.driver)
 
     def setUp(self) -> None:
@@ -28,7 +28,8 @@ class NightDayTest(unittest.TestCase):
 
     def test_switchto_local_forecast(self):
         content,icon = self.nightpage.switchto_local_forecast()
-        self.assertIsNotNone(content.text,"local_forecast is none!")
+        self.assertIsNotNone(content,"local_forecast is none!")
+        self.assertNotEqual(content.text,'',"local_forecast text is null!")
         self.assertIsNotNone(icon,"local_forecast icon is none!")
 
     # def test_click_into_9day(self):
@@ -36,7 +37,8 @@ class NightDayTest(unittest.TestCase):
 
     def test_switchto_night_day_forecast(self):
         gensit,gensitview = self.nightpage.switchto_night_day_forecast()
-        self.assertIsNotNone(gensit.text,'gensit is none!')
+        self.assertIsNotNone(gensit,'gensit is none!')
+        self.assertNotEqual(gensit.text,'gensit text is null!!')
         self.assertIsNotNone(gensitview,'gensitview is none!')
 
     def test_switchto_extended_outlook(self):

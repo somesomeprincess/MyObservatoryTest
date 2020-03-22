@@ -4,7 +4,8 @@ from selenium.webdriver.common.by import By
 from appium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException,NoSuchElementException
+from contextlib import suppress
 
 class BasePage(object):
     def __init__(self,driver:WebDriver):
@@ -13,11 +14,13 @@ class BasePage(object):
 
 
     def find_element(self, locator,parent=None):
-        if parent:
-            obj = parent.find_element(locator[0],locator[1])
-        else:
-            obj = self.driver.find_element(locator[0],locator[1])
-        return obj
+        with suppress(NoSuchElementException):
+            if parent:
+                obj = parent.find_element(locator[0],locator[1])
+            else:
+                obj = self.driver.find_element(locator[0],locator[1])
+            return obj
+        return None
 
     def open_app(self):
         self.cap = {
